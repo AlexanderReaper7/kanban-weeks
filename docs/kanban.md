@@ -58,3 +58,15 @@ A work item is an issue without sub-issues, and needs a size. An issue with sub-
 | Done | Finished. |
 
 `kanban/setup_board.py` writes each rule into its column's description, so the board shows it. `kanban/board.py` checks the board every working day and reports what breaks a rule.
+
+A GitHub column limit counts one column for the whole team and only warns, so it cannot hold a per-person limit. It is still worth setting as the ceiling the per-person limits allow, on every board view, by hand, since each view keeps its own limits. Neither API can set them. Checked on 2026-09-25: GraphQL's `updateProjectV2View` takes a name, a layout, a filter and the visible fields, and the REST API's OpenAPI description has no column limit anywhere.
+
+The limits:
+
+| Column | Column limit |
+| --- | --- |
+| In progress | `team.size` × `limits.person_items` |
+| In review | `limits.review_items` |
+| Backlog, Ready, Done | None |
+
+Set them again when `kanban.toml` changes either number.
