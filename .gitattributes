@@ -1,0 +1,4 @@
+* text=auto eol=lf
+
+# RFC 5545 requires CRLF in calendar files.
+*.ics text eol=crlf

@@ -1,0 +1,53 @@
+# The rules board.py checks, the fields setup_board.py makes, and the meetings
+# ics.py writes. What each rule means: docs/kanban.md.
+
+[project]
+owner = "your-login"                  # the user or organization that owns the project
+number = 1                            # from the project's URL
+repository = "your-login/your-repo"   # where the report issue lives
+timezone = "Europe/Stockholm"         # decides "today" and the meeting times
+
+[period]
+start = 2026-01-05   # the Monday of week 1
+weeks = 12
+
+[team]
+size = 4                    # Ready is refilled while it holds fewer items than this
+product_owner = "the product owner"
+
+[limits]
+person_items = 3   # items In progress per person
+person_days = 3    # nominal days In progress per person
+review_items = 3   # items In review for the whole team
+
+# Smallest first. The last one's description says bigger is a supertask.
+[[sizes]]
+name = "Small"
+nominal = 0.5   # days
+maximum = 2     # working days In progress before a sync is called
+color = "GREEN"
+
+[[sizes]]
+name = "Medium"
+nominal = 1
+maximum = 3
+color = "YELLOW"
+
+[[sizes]]
+name = "Large"
+nominal = 3
+maximum = 5
+color = "ORANGE"
+
+[calendar]
+name = "Team meetings"
+
+[[meetings]]
+id = "week-start-sync"
+name = "Week-start sync and refill"
+weekday = "MO"
+time = 09:00:00
+minutes = 60
+first_week = 1
+every = 1
+description = "Mandatory. Also the weekly refill of Ready."

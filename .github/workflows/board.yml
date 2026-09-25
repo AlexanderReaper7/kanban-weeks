@@ -1,0 +1,38 @@
+# Checks a project board and posts the report, see kanban/board.py. A project
+# repository calls this with its kanban.toml; kanban.yml beside this file is
+# the caller a repository made from the template gets.
+#
+# The script is checked out from this repository at the commit the caller
+# pinned, so the tag in the caller's `uses:` is the one version to bump.
+name: board
+
+on:
+  workflow_call:
+    inputs:
+      config:
+        description: Path to kanban.toml in the calling repository
+        type: string
+        default: kanban.toml
+    secrets:
+      board_token:
+        description: Classic token of a machine account with the project and repo scopes
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: ${{ job.workflow_repository }}
+          ref: ${{ job.workflow_sha }}
+          path: .kanban-weeks
+      - name: Check the board, set start dates, post the report if it changed
+        run: python3 .kanban-weeks/kanban/board.py --config "$CONFIG" --write --comment
+        env:
+          CONFIG: ${{ inputs.config }}
+          GH_TOKEN: ${{ secrets.board_token }}
